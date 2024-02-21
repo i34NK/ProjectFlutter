@@ -42,7 +42,7 @@ class _ActivitieState extends State<Activitie> {
               style: TextStyle(color: Colors.black, fontSize: 10),
             ),
             SizedBox(
-              height: 5,
+              height: 6,
             ),
             Text(
               "Joeshingshue",
