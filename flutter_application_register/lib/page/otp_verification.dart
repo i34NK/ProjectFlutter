@@ -127,7 +127,7 @@ class _OTPPageState extends State<OTPPage> {
                             onTap: () {
                               _resendOTP();
                             },
-                            child: Text("Resend"))
+                            child: Text("Resending"))
                       ],
                     ),
                   ],
