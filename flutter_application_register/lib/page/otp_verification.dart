@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_register/page/activitie.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
+import 'package:flutter_application_register/page/activitie.dart';
 
 class OTPPage extends StatefulWidget {
   const OTPPage({super.key});
@@ -64,7 +66,7 @@ class _OTPPageState extends State<OTPPage> {
                   height: 50,
                 ),
                 Image.asset(
-                  'lib/image/lock.png',
+                  'images/lock.png',
                   height: 200,
                 ),
                 SizedBox(
@@ -96,11 +98,11 @@ class _OTPPageState extends State<OTPPage> {
                 OTPTextField(
                   fieldWidth: 50,
                   fieldStyle: FieldStyle.box,
-                  length: 6,
+                  length: 4,
                   keyboardType: TextInputType.number,
                   width: MediaQuery.of(context).size.width,
                   style: const TextStyle(fontSize: 16, color: Colors.black),
-                  textFieldAlignment: MainAxisAlignment.spaceBetween,
+                  textFieldAlignment: MainAxisAlignment.spaceEvenly,
                   onChanged: (pin) {
                     otp = pin;
                   },
@@ -108,16 +110,19 @@ class _OTPPageState extends State<OTPPage> {
                 SizedBox(
                   height: 25,
                 ),
+                
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text('00:${_countDown.toString()}'),
                     Row(
                       children: [
+                        
                         Text(
                           "Didn't receive OTP?",
                           style: TextStyle(color: Colors.grey),
                         ),
+                        SizedBox(width: 5),
                         InkWell(
                             onTap: () {
                               _resendOTP();
@@ -126,7 +131,35 @@ class _OTPPageState extends State<OTPPage> {
                       ],
                     ),
                   ],
-                )
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                if (otp.length == 4)
+                  SizedBox(
+                    width: double.infinity, 
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Activitie()));
+
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.green,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                      ),
+                      child: Text(
+                        "Login",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),

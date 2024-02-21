@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_register/registerpage.dart';
+import 'package:flutter_application_register/page/activitie.dart';
+import 'package:flutter_application_register/page/firstpage.dart';
+import 'package:flutter_application_register/page/consentdata.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +20,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         
       ),
-      home: const RegisterPage(),
+      home: const Activitie(),
     );
   }
 }
