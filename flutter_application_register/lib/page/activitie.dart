@@ -46,7 +46,7 @@ class _ActivitieState extends State<Activitie> {
             ),
             Text(
               "Joeshingshue",
-              style: TextStyle(color: Colors.black, fontSize: 16),
+              style: TextStyle(color: Colors.black, fontSize: 15),
             ),
           ],
         ),
