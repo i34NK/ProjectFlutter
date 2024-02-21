@@ -2,7 +2,6 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:quickalert/quickalert.dart';
-import 'package:flutter_application_register/page/cancel.dart';
 
 //เพิ่ม refreshindicator ด้วย
 class DataTableUser extends StatelessWidget {
@@ -82,11 +81,7 @@ class DataTableUser extends StatelessWidget {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CancelConsent(),
-                    ));
+                
               },
               child: Text('ยกเลิกให้คำยินยอม'),
             ),
