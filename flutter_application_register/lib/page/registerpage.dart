@@ -90,6 +90,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       if (value.length < 10) {
                         return 'หมายเลขโทรศัพท์ต้องมีอย่างน้อย 10 ตัว';
                       }
+                      if(value.length >10){
+                        return 'หมายเลขโทรศัพท์ต้องมีน้อยกว่า 10 ตัว';
+                      }
                       // กรณีผ่านการตรวจสอบทั้งหมด
                       return null;
                     },

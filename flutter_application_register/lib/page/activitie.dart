@@ -100,6 +100,7 @@ class _ActivitieState extends State<Activitie> {
           ),
           label: 'ความยินยอมที่ระงับ',
         ),
+        
       ],
       onTap: (int index) {
         _pageController.animateToPage(
@@ -108,6 +109,7 @@ class _ActivitieState extends State<Activitie> {
           curve: Curves.easeInOut,
         );
       },
+      
     );
   }
 
@@ -117,3 +119,4 @@ class _ActivitieState extends State<Activitie> {
     });
   }
 }
+
