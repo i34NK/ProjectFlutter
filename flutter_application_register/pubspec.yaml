@@ -45,6 +45,8 @@ dependencies:
   bottom_navigation_view: ^0.3.0
   data_table_2: ^2.5.10
   quickalert: ^1.0.2
+  http: ^1.1.0
+  
 
 dev_dependencies:
   flutter_test:
