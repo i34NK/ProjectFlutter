@@ -12,11 +12,13 @@ class FetchUserList {
     try {
       var response = await http.get(url);
       if (response.statusCode == 200) {
-      
         data = json.decode(response.body);
         results = data.map((e) => Userlist.fromJson(e)).toList();
-        if (query!= null){
-          results = results.where((element) => element.name!.toLowerCase().contains((query.toLowerCase()))).toList();
+        if (query != null) {
+          results = results
+              .where((element) =>
+                  element.name!.toLowerCase().contains((query.toLowerCase())))
+              .toList();
         }
       } else {
         print("fetch error");
@@ -27,3 +29,7 @@ class FetchUserList {
     return results;
   }
 }
+
+
+
+

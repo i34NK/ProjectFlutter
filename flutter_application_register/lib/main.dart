@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_register/page/consentdata.dart';
+import 'package:flutter_application_register/data/consentdata.dart';
 import 'package:flutter_application_register/page/firstpage.dart';
 import 'package:flutter_application_register/page/registerpage.dart';
 import 'package:flutter_application_register/page/activitie.dart';
+import 'package:flutter_application_register/page/suspended.dart';
+import 'package:flutter_application_register/page/loginEmail.dart';
+import 'package:flutter_application_register/page/formdata.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,7 +24,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         
       ),
-      home: const Activitie(),
+      home: Activitie (),
     );
   }
 }
