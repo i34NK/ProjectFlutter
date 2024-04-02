@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_register/data/consentdata.dart';
 import 'package:flutter_application_register/page/suspended.dart';
 import 'package:flutter_application_register/page/formdata.dart';
+import 'package:flutter_application_register/page/loginpage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Activitie extends StatefulWidget {
   const Activitie({Key? key}) : super(key: key);
@@ -13,32 +15,21 @@ class Activitie extends StatefulWidget {
 }
 
 class _ActivitieState extends State<Activitie> {
-  String _firstName = '';
-  String _lastName = '';
+  String fname = '';
+  String lname = '';
   int _selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    getData();
+    getCred();
   }
 
-  Future<void> getData() async {
-    try {
-      final response =
-          await http.get(Uri.parse('https://reqres.in/api/users/1'));
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        setState(() {
-          _firstName = data['data']['first_name'];
-          _lastName = data['data']['last_name'];
-        });
-      } else {
-        throw Exception('Failed to load data');
-      }
-    } catch (error) {
-      throw Exception('Failed to load data: $error');
-    }
+  void getCred() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    setState(() {
+      fname = pref.getString("login")!; 
+    });
   }
 
   @override
@@ -60,7 +51,7 @@ class _ActivitieState extends State<Activitie> {
             ),
             SizedBox(height: 5),
             Text(
-              '$_firstName $_lastName',
+              '${fname}',
               style: TextStyle(color: Colors.black, fontSize: 15),
             ),
           ],
@@ -137,33 +128,46 @@ class _ActivitieState extends State<Activitie> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor:
-            Color.fromARGB(255, 145, 235, 148), 
-            selectedItemColor: Colors.white, 
-        unselectedItemColor: Colors.grey,
-        type: BottomNavigationBarType
-            .fixed, 
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.article_outlined),
-            label: 'เอกสารคำยินยอม',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.description),
-            label: 'ความยินยอมที่ระงับ',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: (int index) {
-          setState(() {
-            _selectedIndex = index;
-            if (index == 1) {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => SuspendedPage()));
-            }
-          });
-        },
-      ),
+          backgroundColor: Color.fromARGB(255, 145, 235, 148),
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.grey,
+          type: BottomNavigationBarType.fixed,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.article_outlined),
+              label: 'เอกสารคำยินยอม',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.description),
+              label: 'ความยินยอมที่ระงับ',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.logout),
+              label: 'ออกจากระบบ',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          onTap: (int index) async {
+            setState(() {
+              _selectedIndex = index;
+              if (index == 1) {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => SuspendedPage()));
+              }
+              if (index == 2) {
+                _logout(); // เรียกฟังก์ชัน _logout()
+              }
+            });
+          }),
+    );
+  }
+
+  void _logout() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    await pref.remove("login");
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => LoginPage()),
+      (route) => false,
     );
   }
 

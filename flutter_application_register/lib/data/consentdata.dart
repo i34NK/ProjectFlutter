@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_application_register/page/activitie.dart';
 import 'package:flutter_application_register/page/suspended.dart';
-import 'package:flutter_application_register/model/API.dart';
+import 'package:flutter_application_register/api/API.dart';
 import 'package:flutter_application_register/model/UserModel.dart';
 import 'package:flutter_application_register/model/search.dart';
 import 'package:quickalert/quickalert.dart';
