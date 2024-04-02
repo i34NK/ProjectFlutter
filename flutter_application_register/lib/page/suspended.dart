@@ -1,15 +1,17 @@
 import 'dart:convert';
 
+import 'package:flutter_application_register/page/loginpage.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_application_register/page/activitie.dart';
 import 'package:flutter_application_register/page/suspended.dart';
-import 'package:flutter_application_register/model/API.dart';
+import 'package:flutter_application_register/api/API.dart';
 import 'package:flutter_application_register/model/UserModel.dart';
 import 'package:flutter_application_register/model/search.dart';
 import 'package:flutter_application_register/data/suspendedData.dart';
 import 'package:flutter_application_register/data/consentdata.dart';
 import 'package:quickalert/quickalert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SuspendedPage extends StatefulWidget {
   const SuspendedPage({Key? key}) : super(key: key);
@@ -94,21 +96,37 @@ class _SuspendedPageState extends State<SuspendedPage> {
             icon: Icon(Icons.description),
             label: 'ความยินยอมที่ระงับ',
           ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.logout),
+              label: 'ออกจากระบบ',
+            ),
         ],
         currentIndex: _selectedIndex,
-        onTap: (int index) {
+        onTap: (int index) async{
           setState(() {
             _selectedIndex = index;
             if (index == 0) {
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => Activitie()));
             }
+            if (index == 2) {
+                _logout(); // เรียกฟังก์ชัน _logout()
+              }
           });
         },
       ),
     );
   }
+  void _logout() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    await pref.remove("login");
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => LoginPage()),
+      (route) => false,
+    );
+  }
 }
+
 
 Future<void> _showMyDialog(BuildContext context) async {
   return showDialog<void>(

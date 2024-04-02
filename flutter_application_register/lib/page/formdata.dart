@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_register/model/ConsentFormModel.dart';
-import 'package:flutter_application_register/model/apiform.dart';
+import 'package:flutter_application_register/api/apiform.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
@@ -85,6 +85,15 @@ class _FormDataState extends State<FormData> {
                                     fontSize: 14,
                                   ),
                                 ),
+                                SizedBox(height: 10),
+                                Text(
+                                  'Date: '
+                                  '${_forms?[index].requestDate}',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 14,
+                                  ),
+                                ),
                               ],
                             ),
                           )
@@ -93,14 +102,11 @@ class _FormDataState extends State<FormData> {
                       trailing: IconButton(
                         icon: Icon(Icons.article_outlined),
                         onPressed: () {
-                          _showMyDialog(context);
+                          _showMyDialog(context, _forms[index]);
                         },
                       ),
-                        
-                      ),
-                      
                     ),
-                  
+                  ),
                 );
               },
             ),
@@ -108,14 +114,31 @@ class _FormDataState extends State<FormData> {
   }
 }
 
-Future<void> _showMyDialog(BuildContext context) async {
+Future<void> _showMyDialog(BuildContext context, Payload formData) async {
   return showDialog<void>(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('ความยินยอมข้อมูลส่วนบุคคล'),
-        content: Text(
-            'Lorem ipsum dolor sit amet consectetur adipiscing elit. Vivamus ipsum est tincidunt sit amet posuere vel, luctus vel dolor. Suspendisse potenti. Curabitur vel mauris vel tortor pellentesque tempor. Pellentesque sodales, erat id congue blandit ipsum metus molestie arcu ac hendrerit felis est id leo. Pellentesque dolor ligula feugiat in diam nec lacinia tristique dui. Donec molestie ex eget purus malesuada egestas. Quisque commodo sagittis ante ac viverra. In id nulla nunc. Nulla elementum eros at vestibulum dignissim. Sed et lacinia est. Mauris non semper sapien. Lorem ipsum dolor sit amet consectetur adipiscing elit'),
+        title: Text('${formData.title}'),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(height: 16),
+            Text(
+              '${formData.notes}',
+              style: TextStyle(fontSize: 14),
+            ),
+            SizedBox(height: 10),
+            Text(
+              '${formData.footer}',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 14,
+              ),
+            ),
+          ],
+        ),
         actions: <Widget>[
           TextButton(
             onPressed: () {
@@ -124,13 +147,6 @@ Future<void> _showMyDialog(BuildContext context) async {
             },
             child: Text('ยกเลิกให้คำยินยอม'),
           ),
-          // TextButton(
-          //   onPressed: () {
-          //     Navigator.of(context).pop();
-          //     showAlert(context);
-          //   },
-          //   child: Text('ระงับ'),
-          // ),
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();

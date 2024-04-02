@@ -46,6 +46,7 @@ dependencies:
   data_table_2: ^2.5.10
   quickalert: ^1.0.2
   http: ^1.1.0
+  shared_preferences: ^2.2.2
   
 
 dev_dependencies:
