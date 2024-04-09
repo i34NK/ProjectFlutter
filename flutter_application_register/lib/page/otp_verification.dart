@@ -98,7 +98,7 @@ class _OTPPageState extends State<OTPPage> {
                 OTPTextField(
                   fieldWidth: 50,
                   fieldStyle: FieldStyle.box,
-                  length: 4,
+                  length: 6,
                   keyboardType: TextInputType.number,
                   width: MediaQuery.of(context).size.width,
                   style: const TextStyle(fontSize: 16, color: Colors.black),
@@ -135,7 +135,7 @@ class _OTPPageState extends State<OTPPage> {
                 SizedBox(
                   height: 20,
                 ),
-                if (otp.length == 4)
+                if (otp.length == 6)
                   SizedBox(
                     width: double.infinity, 
                     height: 50,

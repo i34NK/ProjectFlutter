@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:flutter_application_register/data/consentdata.dart';
 import 'package:flutter_application_register/page/suspended.dart';
 import 'package:flutter_application_register/page/formdata.dart';
 import 'package:flutter_application_register/page/loginpage.dart';

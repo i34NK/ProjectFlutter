@@ -29,76 +29,75 @@ class _RegisterPageState extends State<RegisterPage> {
     e164Key: "",
   );
 
-  Future<void> login(String phone) async {
-  try {
-    final response = await http.post(
-      Uri.parse('https://api.pdpaconsults.online/login'),
-      body: {'phone': phone},
-    );
+//   Future<void> login(String phone) async {
+//   try {
+//     final response = await http.post(
+//       Uri.parse('https://api.pdpaconsults.online/login'),
+//       body: {'phone': phone},
+//     );
 
-    if (response.statusCode == 200) {
-      // ถ้าส่งคำขอสำเร็จ และ login สำเร็จ
-      final data = json.decode(response.body);
-      if (data['status'] == 200) {
-        // ถ้า login สำเร็จ
-        // นำข้อมูลที่ส่งกลับมาจาก API ไปใช้งานต่อได้
-        String phones = data['payload']['phone'];
-        if(phones == phone){
-          // เรียกไปยังหน้าต่อไปหรือทำอย่างอื่นตามที่ต้องการ
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => OTPPage(),
-          ),
-        );
-        }
-        
-      } else {
-        // ถ้า login ไม่สำเร็จ
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Login Failed"),
-              content: Text(data['message']),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text("OK"),
-                ),
-              ],
-            );
-          },
-        );
-      }
-    } else {
-      // ถ้าส่งคำขอไม่สำเร็จ
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Error"),
-            content: Text("Failed to send request"),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text("OK"),
-              ),
-            ],
-          );
-        },
-      );
-    }
-  } catch (e) {
-    // จับข้อผิดพลาดที่เกิดขึ้น
-    print(e.toString());
-  }
-}
+//     if (response.statusCode == 200) {
+//       // ถ้าส่งคำขอสำเร็จ และ login สำเร็จ
+//       final data = json.decode(response.body);
+//       if (data['status'] == 200) {
+//         // ถ้า login สำเร็จ
+//         // นำข้อมูลที่ส่งกลับมาจาก API ไปใช้งานต่อได้
+//         String phones = data['payload']['phone'];
+//         if(phones == phone){
+//           // เรียกไปยังหน้าต่อไปหรือทำอย่างอื่นตามที่ต้องการ
+//         Navigator.push(
+//           context,
+//           MaterialPageRoute(
+//             builder: (context) => OTPPage(),
+//           ),
+//         );
+//         }
 
+//       } else {
+//         // ถ้า login ไม่สำเร็จ
+//         showDialog(
+//           context: context,
+//           builder: (BuildContext context) {
+//             return AlertDialog(
+//               title: Text("Login Failed"),
+//               content: Text(data['message']),
+//               actions: <Widget>[
+//                 TextButton(
+//                   onPressed: () {
+//                     Navigator.of(context).pop();
+//                   },
+//                   child: Text("OK"),
+//                 ),
+//               ],
+//             );
+//           },
+//         );
+//       }
+//     } else {
+//       // ถ้าส่งคำขอไม่สำเร็จ
+//       showDialog(
+//         context: context,
+//         builder: (BuildContext context) {
+//           return AlertDialog(
+//             title: Text("Error"),
+//             content: Text("Failed to send request"),
+//             actions: <Widget>[
+//               TextButton(
+//                 onPressed: () {
+//                   Navigator.of(context).pop();
+//                 },
+//                 child: Text("OK"),
+//               ),
+//             ],
+//           );
+//         },
+//       );
+//     }
+//   } catch (e) {
+//     // จับข้อผิดพลาดที่เกิดขึ้น
+//     print(e.toString());
+//   }
+// }
 
   @override
   Widget build(BuildContext context) {
@@ -130,8 +129,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   height: 10,
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Text(
                     "Enter your Phone Number to continue, we will send you OTP to verify",
                     textAlign: TextAlign.center,
@@ -171,13 +170,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                            const BorderSide(color: Colors.black12),
+                        borderSide: const BorderSide(color: Colors.black12),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                            const BorderSide(color: Colors.black12),
+                        borderSide: const BorderSide(color: Colors.black12),
                       ),
                       prefixIcon: Container(
                         padding: const EdgeInsets.all(14.0),
@@ -186,8 +183,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             showCountryPicker(
                               context: context,
                               countryListTheme:
-                                  CountryListThemeData(
-                                      bottomSheetHeight: 550),
+                                  CountryListThemeData(bottomSheetHeight: 550),
                               onSelect: (value) {
                                 setState(() {
                                   selectedCountry = value;
@@ -205,8 +201,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ),
                       ),
-                      suffixIcon: phoneNumberController.text.length >
-                              9
+                      suffixIcon: phoneNumberController.text.length > 9
                           ? Container(
                               height: 30,
                               width: 30,
@@ -231,9 +226,15 @@ class _RegisterPageState extends State<RegisterPage> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) { 
-                        login(phoneNumberController.text.toString());
-                      }
+                      // if (_formKey.currentState!.validate()) {
+                      //   login(phoneNumberController.text.toString());
+                      // }
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => OTPPage(),
+                        ),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.green,

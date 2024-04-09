@@ -29,9 +29,6 @@ class _FormDataState extends State<FormData> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Form Data'),
-      // ),
       body: _forms.isEmpty
           ? Center(
               child: CircularProgressIndicator(),
