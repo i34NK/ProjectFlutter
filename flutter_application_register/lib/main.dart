@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_register/data/consentdata.dart';
 import 'package:flutter_application_register/page/firstpage.dart';
 import 'package:flutter_application_register/page/registerpage.dart';
 import 'package:flutter_application_register/page/activitie.dart';

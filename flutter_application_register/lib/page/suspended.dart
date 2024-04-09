@@ -5,12 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_application_register/page/activitie.dart';
 import 'package:flutter_application_register/page/suspended.dart';
-import 'package:flutter_application_register/api/API.dart';
 import 'package:flutter_application_register/model/UserModel.dart';
-import 'package:flutter_application_register/model/search.dart';
 import 'package:flutter_application_register/data/suspendedData.dart';
-import 'package:flutter_application_register/data/consentdata.dart';
-import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SuspendedPage extends StatefulWidget {
@@ -75,9 +71,9 @@ class _SuspendedPageState extends State<SuspendedPage> {
             color: Colors.grey,
             thickness: 3,
           ),
-          Expanded(
-            child: SuspendedData(),
-          ),
+          // Expanded(
+          //   child: SuspendedData(),
+          // ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -140,7 +136,6 @@ Future<void> _showMyDialog(BuildContext context) async {
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
-              showAlert(context);
             },
             child: Text('ยกเลิกให้คำยินยอม'),
           ),
@@ -154,8 +149,4 @@ Future<void> _showMyDialog(BuildContext context) async {
       );
     },
   );
-}
-
-void showAlert(BuildContext context) {
-  QuickAlert.show(context: context, type: QuickAlertType.confirm);
 }
