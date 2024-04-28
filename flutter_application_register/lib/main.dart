@@ -4,7 +4,9 @@ import 'package:flutter_application_register/page/registerpage.dart';
 import 'package:flutter_application_register/page/activitie.dart';
 import 'package:flutter_application_register/page/suspended.dart';
 import 'package:flutter_application_register/page/formdata.dart';
-import 'package:flutter_application_register/page/loginpage.dart';
+import 'package:flutter_application_register/page/sendOTP.dart';
+
+
 
 void main() {
   runApp(const MyApp());
@@ -23,7 +25,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         
       ),
-      home: LoginPage(),
+      home: FirstPage(),
     );
   }
 }

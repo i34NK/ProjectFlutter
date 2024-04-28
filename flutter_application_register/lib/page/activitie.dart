@@ -1,9 +1,9 @@
 import 'dart:convert';
+import 'package:flutter_application_register/page/sendOTP.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_application_register/page/suspended.dart';
 import 'package:flutter_application_register/page/formdata.dart';
-import 'package:flutter_application_register/page/loginpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Activitie extends StatefulWidget {
@@ -14,8 +14,7 @@ class Activitie extends StatefulWidget {
 }
 
 class _ActivitieState extends State<Activitie> {
-  String fname = '';
-  String lname = '';
+  String phoneNumber = '';
   int _selectedIndex = 0;
 
   @override
@@ -24,10 +23,11 @@ class _ActivitieState extends State<Activitie> {
     getCred();
   }
 
+  //ฟังก์ชันการเก็บข้อมูลการล็อกอินไว้ที่เครื่องตลอด
   void getCred() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
-      fname = pref.getString("login")!; 
+      phoneNumber = pref.getString("phone") ?? "No phone number"; 
     });
   }
 
@@ -45,12 +45,12 @@ class _ActivitieState extends State<Activitie> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Username",
+              "Phone Number",
               style: TextStyle(color: Colors.black, fontSize: 10),
             ),
             SizedBox(height: 5),
             Text(
-              '${fname}',
+              phoneNumber, // แสดงเบอร์โทรศัพท์
               style: TextStyle(color: Colors.black, fontSize: 15),
             ),
           ],
@@ -161,11 +161,12 @@ class _ActivitieState extends State<Activitie> {
     );
   }
 
+  //ฟังก์ชันการออกจากระบบ
   void _logout() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    await pref.remove("login");
+    await pref.remove("phone");
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => LoginPage()),
+      MaterialPageRoute(builder: (context) => SendOTPPage()),
       (route) => false,
     );
   }

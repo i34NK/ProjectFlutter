@@ -15,6 +15,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   TextEditingController phoneNumberController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool isLoading = false; // To manage loading state
 
   Country selectedCountry = Country(
     phoneCode: "66",
@@ -29,75 +30,60 @@ class _RegisterPageState extends State<RegisterPage> {
     e164Key: "",
   );
 
-//   Future<void> login(String phone) async {
-//   try {
-//     final response = await http.post(
-//       Uri.parse('https://api.pdpaconsults.online/login'),
-//       body: {'phone': phone},
-//     );
+  Future<void> sendOtp() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    setState(() {
+      isLoading = true;
+    });
 
-//     if (response.statusCode == 200) {
-//       // ถ้าส่งคำขอสำเร็จ และ login สำเร็จ
-//       final data = json.decode(response.body);
-//       if (data['status'] == 200) {
-//         // ถ้า login สำเร็จ
-//         // นำข้อมูลที่ส่งกลับมาจาก API ไปใช้งานต่อได้
-//         String phones = data['payload']['phone'];
-//         if(phones == phone){
-//           // เรียกไปยังหน้าต่อไปหรือทำอย่างอื่นตามที่ต้องการ
-//         Navigator.push(
-//           context,
-//           MaterialPageRoute(
-//             builder: (context) => OTPPage(),
-//           ),
-//         );
-//         }
+    String phoneNumber =
+        '${selectedCountry.phoneCode}${phoneNumberController.text}';
+    try {
+      var response = await http.post(
+        Uri.parse('https://api.pdpaconsults.com/requestOTP'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'phone': phoneNumber, // แก้ไข key ตามที่ API ของคุณต้องการ
+        }),
+      );
 
-//       } else {
-//         // ถ้า login ไม่สำเร็จ
-//         showDialog(
-//           context: context,
-//           builder: (BuildContext context) {
-//             return AlertDialog(
-//               title: Text("Login Failed"),
-//               content: Text(data['message']),
-//               actions: <Widget>[
-//                 TextButton(
-//                   onPressed: () {
-//                     Navigator.of(context).pop();
-//                   },
-//                   child: Text("OK"),
-//                 ),
-//               ],
-//             );
-//           },
-//         );
-//       }
-//     } else {
-//       // ถ้าส่งคำขอไม่สำเร็จ
-//       showDialog(
-//         context: context,
-//         builder: (BuildContext context) {
-//           return AlertDialog(
-//             title: Text("Error"),
-//             content: Text("Failed to send request"),
-//             actions: <Widget>[
-//               TextButton(
-//                 onPressed: () {
-//                   Navigator.of(context).pop();
-//                 },
-//                 child: Text("OK"),
-//               ),
-//             ],
-//           );
-//         },
-//       );
-//     }
-//   } catch (e) {
-//     // จับข้อผิดพลาดที่เกิดขึ้น
-//     print(e.toString());
-//   }
-// }
+      if (response.statusCode == 200) {
+        var responseData = jsonDecode(response.body);
+        if (responseData['data']['error'] == "0") {
+          // OTP sent successfully
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    OTPPage(phoneNumber: phoneNumber)),
+          );
+        } else {
+          // Handle the error scenario
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error: ${responseData['data']['msg']}')),
+          );
+        }
+      } else {
+        // Handle the scenario when response code is not 200
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to send OTP: ${response.body}')),
+        );
+      }
+    } catch (e) {
+      // Handle errors if any
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error sending OTP: $e')),
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -226,15 +212,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      // if (_formKey.currentState!.validate()) {
-                      //   login(phoneNumberController.text.toString());
-                      // }
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => OTPPage(),
-                        ),
-                      );
+                      sendOtp(); // เรียกใช้ฟังก์ชัน sendOtp
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.green,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_register/page/registerpage.dart';
+import 'package:flutter_application_register/page/sendOTP.dart';
 
 class FirstPage extends StatefulWidget {
   const FirstPage({super.key});
@@ -46,7 +47,7 @@ class _FirstPageState extends State<FirstPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => RegisterPage(),
+                            builder: (context) => SendOTPPage(),
                           ));
                     },
                     style: ElevatedButton.styleFrom(

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter_application_register/page/loginpage.dart';
+import 'package:flutter_application_register/page/sendOTP.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_application_register/page/activitie.dart';
@@ -117,7 +117,7 @@ class _SuspendedPageState extends State<SuspendedPage> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     await pref.remove("login");
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => LoginPage()),
+      MaterialPageRoute(builder: (context) => SendOTPPage()),
       (route) => false,
     );
   }

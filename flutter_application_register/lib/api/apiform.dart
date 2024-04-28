@@ -4,7 +4,7 @@ import 'package:flutter_application_register/model/ConsentFormModel.dart';
 
 class FetchConsentFormList {
   Future<List<Payload>> getConsentFormList() async {
-    Uri uri = Uri.parse('https://api.pdpaconsults.online/forms');
+    Uri uri = Uri.parse('https://api.pdpaconsults.com/formByUser?phone=0987654321');
 
     var response = await http.get(uri);
     if(response.statusCode == 200){
