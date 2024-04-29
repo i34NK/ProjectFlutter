@@ -5,6 +5,8 @@ import 'package:flutter_application_register/page/activitie.dart';
 import 'package:flutter_application_register/page/suspended.dart';
 import 'package:flutter_application_register/page/formdata.dart';
 import 'package:flutter_application_register/page/sendOTP.dart';
+import 'package:flutter_application_register/page/sharedpreferences/homePage.dart';
+import 'package:flutter_application_register/page/sharedpreferences/phonePage.dart';
 
 
 

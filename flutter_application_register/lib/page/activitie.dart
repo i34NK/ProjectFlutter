@@ -16,20 +16,23 @@ class Activitie extends StatefulWidget {
 class _ActivitieState extends State<Activitie> {
   String phoneNumber = '';
   int _selectedIndex = 0;
+  String token = '';
 
   @override
   void initState() {
     super.initState();
-    getCred();
+    getData();
   }
 
   //ฟังก์ชันการเก็บข้อมูลการล็อกอินไว้ที่เครื่องตลอด
-  void getCred() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+  void getData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      phoneNumber = pref.getString("phone") ?? "No phone number"; 
+      token = prefs.getString('token') ?? '';
     });
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -165,6 +168,7 @@ class _ActivitieState extends State<Activitie> {
   void _logout() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     await pref.remove("phone");
+    await pref.remove("token");
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (context) => SendOTPPage()),
       (route) => false,

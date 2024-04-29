@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_register/page/activitie.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OTPPage extends StatefulWidget {
   final String phoneNumber;
@@ -19,7 +20,7 @@ class _OTPPageState extends State<OTPPage> {
   String otp = '';
   String? token;
   Timer? _timer;
-  int _countDown = 30;
+  int _countDown = 300;
   bool canResend = false;
 
   @override
@@ -42,6 +43,8 @@ class _OTPPageState extends State<OTPPage> {
 
     // ตรวจสอบสถานะของการตรวจสอบ OTP
     if (response.statusCode == 200) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', token!);
       // ตรวจสอบ OTP สำเร็จ
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => Activitie()));
@@ -68,8 +71,9 @@ class _OTPPageState extends State<OTPPage> {
 
   void initState() {
     super.initState();
+    token = widget
+        .token; // !!!!!สำคัญมาก สำหรับเช็ค token ไม่ให้แสดงผลว่า token is missing ตรวจสอบว่ามีการรับ token จาก widget อย่างถูกต้อง
     startTimer();
-    token = widget.token; // !!!!!สำคัญมาก สำหรับเช็ค token ไม่ให้แสดงผลว่า token is missing ตรวจสอบว่ามีการรับ token จาก widget อย่างถูกต้อง
   }
 
   void dispose() {
@@ -83,17 +87,17 @@ class _OTPPageState extends State<OTPPage> {
         if (_countDown > 0) {
           _countDown--;
         } else {
-          _timer?.cancel();
+          _timer!.cancel();
         }
       });
     });
   }
 
-  void _resendOTP() {
+  void resendOTP() {
     if (canResend) {
       setState(() {
-        _countDown = 30;
-        canResend = false;
+        _countDown = 300;
+        canResend = false; // รีเซ็ตสถานะการสามารถส่งใหม่
       });
       startTimer();
     }
@@ -170,7 +174,7 @@ class _OTPPageState extends State<OTPPage> {
                         SizedBox(width: 5),
                         InkWell(
                             onTap: () {
-                              _resendOTP();
+                              resendOTP();
                             },
                             child: Text("Resend"))
                       ],
