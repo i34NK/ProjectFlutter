@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_register/page/activitie.dart';
 import 'package:flutter_application_register/page/otp_verification.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -14,6 +15,11 @@ class _SendOTPPageState extends State<SendOTPPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   String? token;
+
+  void initState() {
+    super.initState();
+    checkLogin(context);
+  }
 
   Future<void> sendOtp() async {
     if (!_formKey.currentState!.validate()) {
@@ -35,8 +41,17 @@ class _SendOTPPageState extends State<SendOTPPage> {
       );
 
       var responseData = jsonDecode(response.body);
+
+      //เช็คว่าส่ง OTP สำเร็จหรือไม่
       if (response.statusCode == 200 && responseData['data']['error'] == "0") {
+        // ประกาศตัวแปรเพื่อรับค่า response จาก API ในส่วนของ data->result->token
         token = responseData['data']['result']['token'];
+
+
+        // SharedPreferences prefs = await SharedPreferences.getInstance();
+        // await prefs.setString('token', token!);
+        // ส่งไปหน้า OTPPage พร้อมกับข้อมูล phoneNumber และ token
+
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -59,6 +74,25 @@ class _SendOTPPageState extends State<SendOTPPage> {
       setState(() {
         _isLoading = false;
       });
+    }
+  }
+
+  void pageRoute(BuildContext context, String token) async {
+    // เก็บข้อมูล token ไว้ใน SharedPreferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('phone', token);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => Activitie()));
+  }
+
+  //ฟังก์ชันการตรวจสอบการล็อกอิน
+  void checkLogin(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? saveToken = await prefs.getString('token');
+    if (saveToken != null) {
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => Activitie()),
+          (route) => false);
     }
   }
 
