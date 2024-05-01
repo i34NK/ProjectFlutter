@@ -72,6 +72,7 @@ class _OTPPageState extends State<OTPPage> {
     }
   }
 
+
   void initState() {
     super.initState();
     token = widget
@@ -79,11 +80,14 @@ class _OTPPageState extends State<OTPPage> {
     startTimer();
   }
 
+
   void dispose() {
     super.dispose();
     _timer!.cancel();
   }
 
+
+  //ฟังก์ชันตัวนับเวลา
   void startTimer() {
     const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(oneSec, (Timer timer) {
@@ -100,6 +104,7 @@ class _OTPPageState extends State<OTPPage> {
     });
   }
 
+  //ฟังก์ชันส่ง OTP อีกครั้ง
   void resendOTP() {
     if (canResend) {
       setState(() {
@@ -107,6 +112,7 @@ class _OTPPageState extends State<OTPPage> {
         canResend = false; // Reset resend ability
         startTimer();
       });
+      
       
       widget.sendOtpFunction(); // เรียกใช้ฟังก์ชันส่ง OTP
     }
