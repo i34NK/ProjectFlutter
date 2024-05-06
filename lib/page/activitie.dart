@@ -42,7 +42,7 @@ class _ActivitieState extends State<Activitie> {
         toolbarHeight: 80,
         leading: CircleAvatar(
           backgroundColor: Colors.transparent,
-          child: Image.asset('images/woman.png'),
+          child: Image.asset('images/logoMobile.jpg'),
         ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

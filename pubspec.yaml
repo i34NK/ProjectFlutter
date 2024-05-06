@@ -47,6 +47,7 @@ dependencies:
   quickalert: ^1.0.2
   http: ^1.1.0
   shared_preferences: ^2.2.2
+  flutter_launcher_icons: ^0.13.1
   
 
 dev_dependencies:
@@ -79,6 +80,8 @@ flutter:
      - images/hos.png
      - images/woman.png
      - images/logo.png
+     - images/logoApp.png
+     - images/logoMobile.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -105,3 +108,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "images/logoMobile.png"
+  min_sdk_android: 21 
