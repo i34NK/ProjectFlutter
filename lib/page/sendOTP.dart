@@ -47,8 +47,10 @@ class _SendOTPPageState extends State<SendOTPPage> {
         // ประกาศตัวแปรเพื่อรับค่า response จาก API ในส่วนของ data->result->token
         token = responseData['data']['result']['token'];
 
-        // SharedPreferences prefs = await SharedPreferences.getInstance();
-        // await prefs.setString('token', token!);
+        // บันทึกเบอร์โทรศัพท์ลง SharedPreferences
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('phone', _phoneController.text);
+
         // ส่งไปหน้า OTPPage พร้อมกับข้อมูล phoneNumber และ token
 
         Navigator.push(
@@ -79,18 +81,20 @@ class _SendOTPPageState extends State<SendOTPPage> {
     }
   }
 
+  //Write Data in SharedPreferences
   void pageRoute(BuildContext context, String token) async {
     // เก็บข้อมูล token ไว้ใน SharedPreferences
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('phone', token);
+    SharedPreferences prefs =
+        await SharedPreferences.getInstance(); // write data
+    await prefs.setString('phone', token); // write data ของ phone และ token
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => Activitie()));
   }
 
-  //ฟังก์ชันการตรวจสอบการล็อกอิน
+  //ฟังก์ชันการตรวจสอบการล็อกอิน และ Read Data
   void checkLogin(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? saveToken = await prefs.getString('token');
+    String? saveToken = await prefs.getString('token'); // read data token
     if (saveToken != null) {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => Activitie()),

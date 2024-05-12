@@ -43,23 +43,23 @@ class _FormDataState extends State<FormData> {
                     child: ListTile(
                       title: Row(
                         children: [
-                          Container(
-                            width: 60,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Center(
-                              child: Text(
-                                '${_forms?[index].formId}',
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black),
-                              ),
-                            ),
-                          ),
+                          // Container(
+                          //   width: 60,
+                          //   height: 60,
+                          //   decoration: BoxDecoration(
+                          //     color: Colors.white,
+                          //     borderRadius: BorderRadius.circular(10),
+                          //   ),
+                          //   child: Center(
+                          //     child: Text(
+                          //       '${_forms?[index].formId}',
+                          //       style: TextStyle(
+                          //           fontSize: 20,
+                          //           fontWeight: FontWeight.bold,
+                          //           color: Colors.black),
+                          //     ),
+                          //   ),
+                          // ),
                           SizedBox(width: 20),
                           Expanded(
                             child: Column(
@@ -123,7 +123,7 @@ Future<void> _showMyDialog(BuildContext context, Payload formData) async {
           children: [
             SizedBox(height: 16),
             Text(
-              '${formData.notes}',
+              '${formData.content}',
               style: TextStyle(fontSize: 14),
             ),
             SizedBox(height: 10),

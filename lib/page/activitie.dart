@@ -29,6 +29,7 @@ class _ActivitieState extends State<Activitie> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       token = prefs.getString('token') ?? '';
+      phoneNumber = prefs.getString('phone') ?? '';
     });
   }
 
@@ -42,13 +43,12 @@ class _ActivitieState extends State<Activitie> {
         toolbarHeight: 80,
         leading: CircleAvatar(
           backgroundColor: Colors.transparent,
-          child: Image.asset('images/logoMobile.jpg'),
         ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Phone Number",
+              "Your Phone Number",
               style: TextStyle(color: Colors.black, fontSize: 10),
             ),
             SizedBox(height: 5),

@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_application_register/page/activitie.dart';
 import 'package:flutter_application_register/page/suspended.dart';
-import 'package:flutter_application_register/model/UserModel.dart';
 import 'package:flutter_application_register/data/suspendedData.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -71,9 +70,9 @@ class _SuspendedPageState extends State<SuspendedPage> {
             color: Colors.grey,
             thickness: 3,
           ),
-          // Expanded(
-          //   child: SuspendedData(),
-          // ),
+          Expanded(
+            child: SuspendedData(),
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

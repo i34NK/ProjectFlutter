@@ -1,7 +1,7 @@
 class Payload {
-    int formId;
+    String formId;
     String phone;
-    String notes;
+    String content;
     DateTime requestDate;
     String dataType;
     DateTime? fulfilledDate;
@@ -13,7 +13,7 @@ class Payload {
     Payload({
         required this.formId,
         required this.phone,
-        required this.notes,
+        required this.content,
         required this.requestDate,
         required this.dataType,
         required this.fulfilledDate,
@@ -26,7 +26,7 @@ class Payload {
       return Payload(
         formId: json['form_id'] ?? 0,
         phone: json['phone'] ?? '',
-        notes: json['notes'] ?? '',
+        content: json['content'] ?? '',
         requestDate: DateTime.parse(json['request_date'] ?? ''),
         dataType: json['data_type'] ?? '',
         fulfilledDate: json['fulfilled_date'] != null ? DateTime.parse(json['fulfilled_date']) : null,
