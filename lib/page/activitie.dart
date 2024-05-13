@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_application_register/data/formList.dart';
 import 'package:flutter_application_register/page/sendOTP.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -93,40 +94,40 @@ class _ActivitieState extends State<Activitie> {
               ),
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  'หมายเลข',
-                  style: TextStyle(fontSize: 15, color: Colors.grey),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  'แบบฟอร์มคำยินยอม',
-                  style: TextStyle(fontSize: 15, color: Colors.grey),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  'รายละเอียด',
-                  style: TextStyle(fontSize: 15, color: Colors.grey),
-                ),
-              ),
-            ],
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //   crossAxisAlignment: CrossAxisAlignment.start,
+          //   children: [
+          //     Padding(
+          //       padding: EdgeInsets.all(8.0),
+          //       child: Text(
+          //         'หมายเลข',
+          //         style: TextStyle(fontSize: 15, color: Colors.grey),
+          //       ),
+          //     ),
+          //     Padding(
+          //       padding: EdgeInsets.all(8.0),
+          //       child: Text(
+          //         'แบบฟอร์มคำยินยอม',
+          //         style: TextStyle(fontSize: 15, color: Colors.grey),
+          //       ),
+          //     ),
+          //     Padding(
+          //       padding: EdgeInsets.all(8.0),
+          //       child: Text(
+          //         'รายละเอียด',
+          //         style: TextStyle(fontSize: 15, color: Colors.grey),
+          //       ),
+          //     ),
+          //   ],
+          // ),
           Divider(
             color: Colors.grey,
             thickness: 3,
           ),
           Expanded(
             // เรียกใช้หน้าแสดงแบบฟอร์ม
-            child: FormData(),
+            child: FormFutureBuilder(),
           ),
         ],
       ),
