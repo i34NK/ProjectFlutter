@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_register/api/apiform.dart';
 import 'package:flutter_application_register/model/ConsentFormModel.dart';
+import 'package:flutter_application_register/search/search_delegrate.dart';
 import 'package:intl/intl.dart';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_application_register/api/apiform.dart';
+import 'package:flutter_application_register/model/ConsentFormModel.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_application_register/search/search_delegrate.dart';
 
 class FormFutureBuilder extends StatefulWidget {
   const FormFutureBuilder({super.key});
@@ -20,19 +27,42 @@ class _FormFutureBuilderState extends State<FormFutureBuilder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: FutureBuilder(
-            future: _getForm(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              print(snapshot.data);
-              if (snapshot.data == null) {
-                return Container(
-                  child: Center(
-                    child: Text('Loading...'),
-                  ),
-                );
-              } else {
-                return ListView.builder(
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: TextField(
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Color.fromARGB(255, 236, 233, 233),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                hintText: 'ค้นหาแบบฟอร์ม',
+                hintStyle: TextStyle(fontSize: 15),
+                prefixIcon: Icon(Icons.search),
+                prefixIconColor: Colors.black,
+                isDense: true,
+              ),
+              onTap: () {
+                showSearch(context: context, delegate: FormSearchDelegate());
+              },
+            ),
+          ),
+          Expanded(
+            child: FutureBuilder<List<Payload>>(
+              future: _getForm(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                if (!snapshot.hasData || snapshot.data.isEmpty) {
+                  return Center(child: Text('No data found'));
+                }
+
+                return RefreshIndicator(
+                  onRefresh: _getForm,
+                  child: ListView.builder(
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) {
                       return ListTile(
@@ -72,39 +102,39 @@ class _FormFutureBuilderState extends State<FormFutureBuilder> {
                           ],
                         ),
                         trailing: IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => FormDetail(
-                                    snapshot.data[index],
-                                  ),
-                                ),
-                              );
-                            },
-                            icon: Icon(Icons.article_outlined)),
-                        // title: Text(snapshot.data[index].title),
-                        // subtitle: Text(snapshot.data[index].dataType),
-                        onTap: () {
-                          {
+                          onPressed: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => FormDetail(
-                                  snapshot.data[index],
-                                ),
+                                builder: (context) =>
+                                    FormDetail(snapshot.data[index]),
                               ),
                             );
-                          }
+                          },
+                          icon: Icon(Icons.article_outlined),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  FormDetail(snapshot.data[index]),
+                            ),
+                          );
                         },
                       );
-                    });
-              }
-            }),
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
 }
+
 
 class FormDetail extends StatelessWidget {
   final Payload form;

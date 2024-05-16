@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:flutter_application_register/data/cancelListData.dart';
 import 'package:flutter_application_register/page/sendOTP.dart';
+import 'package:flutter_application_register/search/search_delegrate.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_application_register/page/activitie.dart';
@@ -16,15 +18,54 @@ class SuspendedPage extends StatefulWidget {
 }
 
 class _SuspendedPageState extends State<SuspendedPage> {
+String phoneNumber = '';
   int _selectedIndex = 0;
+  String token = '';
 
+  @override
+  void initState() {
+    super.initState();
+    getPrefs();
+  }
+  void getPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      token = prefs.getString('token') ?? '';
+      phoneNumber = prefs.getString('phone') ?? '';
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        toolbarHeight: 80,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Your Phone Number",
+              style: TextStyle(color: Colors.black, fontSize: 10),
+            ),
+            SizedBox(height: 5),
+            Text(
+              phoneNumber, // แสดงเบอร์โทรศัพท์
+              style: TextStyle(color: Colors.black, fontSize: 15),
+            ),
+          ],
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              showSearch(context: context, delegate: FormSearchDelegate());
+            },
+          ),
+        ],
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 50),
           Padding(
             padding: EdgeInsets.only(left: 20, top: 10),
             child: Text(
@@ -39,39 +80,13 @@ class _SuspendedPageState extends State<SuspendedPage> {
               style: TextStyle(fontSize: 15, color: Colors.grey),
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  'หมายเลข',
-                  style: TextStyle(fontSize: 15, color: Colors.grey),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  'แบบฟอร์มคำยินยอม',
-                  style: TextStyle(fontSize: 15, color: Colors.grey),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  'รายละเอียด',
-                  style: TextStyle(fontSize: 15, color: Colors.grey),
-                ),
-              ),
-            ],
-          ),
+          
           Divider(
             color: Colors.grey,
             thickness: 3,
           ),
           Expanded(
-            child: SuspendedData(),
+            child: CancelListData(),
           ),
         ],
       ),

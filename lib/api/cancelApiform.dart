@@ -3,8 +3,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_application_register/model/ConsentFormModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class FetchConsentFormList {
-  Future<List<Payload>> getConsentFormList() async {
+class FetchCancelConsentFormList {
+  Future<List<Payload>> getCancelConsentFormList() async {
     // ทำการเรียกใช้ SharedPreferences
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? phoneNumber = prefs.getString('phone');

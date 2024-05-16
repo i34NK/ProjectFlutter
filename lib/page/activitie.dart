@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'package:flutter_application_register/api/apiform.dart';
+import 'package:flutter_application_register/data/cancelListData.dart';
 import 'package:flutter_application_register/data/formList.dart';
 import 'package:flutter_application_register/page/sendOTP.dart';
+import 'package:flutter_application_register/search/search_delegrate.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_application_register/page/suspended.dart';
@@ -19,14 +22,15 @@ class _ActivitieState extends State<Activitie> {
   int _selectedIndex = 0;
   String token = '';
 
+
   @override
   void initState() {
     super.initState();
-    getData();
+    getPrefs();
   }
 
   //ฟังก์ชันการเก็บข้อมูลการล็อกอินไว้ที่เครื่องตลอด
-  void getData() async {
+  void getPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       token = prefs.getString('token') ?? '';
@@ -42,9 +46,6 @@ class _ActivitieState extends State<Activitie> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         toolbarHeight: 80,
-        leading: CircleAvatar(
-          backgroundColor: Colors.transparent,
-        ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -59,6 +60,14 @@ class _ActivitieState extends State<Activitie> {
             ),
           ],
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search, color: Colors.black),
+            onPressed: (){
+              showSearch(context: context, delegate: FormSearchDelegate());
+            },
+          ),
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,50 +86,7 @@ class _ActivitieState extends State<Activitie> {
               style: TextStyle(fontSize: 15, color: Colors.grey),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: TextField(
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Color.fromARGB(255, 236, 233, 233),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                hintText: 'ค้นหาแบบฟอร์ม',
-                hintStyle: TextStyle(fontSize: 15),
-                prefixIcon: Icon(Icons.search),
-                prefixIconColor: Colors.black,
-                isDense: true,
-              ),
-            ),
-          ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          //   crossAxisAlignment: CrossAxisAlignment.start,
-          //   children: [
-          //     Padding(
-          //       padding: EdgeInsets.all(8.0),
-          //       child: Text(
-          //         'หมายเลข',
-          //         style: TextStyle(fontSize: 15, color: Colors.grey),
-          //       ),
-          //     ),
-          //     Padding(
-          //       padding: EdgeInsets.all(8.0),
-          //       child: Text(
-          //         'แบบฟอร์มคำยินยอม',
-          //         style: TextStyle(fontSize: 15, color: Colors.grey),
-          //       ),
-          //     ),
-          //     Padding(
-          //       padding: EdgeInsets.all(8.0),
-          //       child: Text(
-          //         'รายละเอียด',
-          //         style: TextStyle(fontSize: 15, color: Colors.grey),
-          //       ),
-          //     ),
-          //   ],
-          // ),
+          
           Divider(
             color: Colors.grey,
             thickness: 3,
