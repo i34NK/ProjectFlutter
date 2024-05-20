@@ -22,11 +22,12 @@ class FormSearchDelegate extends SearchDelegate {
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.arrow_back),
-      onPressed: () {
-        close(context, null);
+      icon: Icon(Icons.arrow_back_ios),
+      onPressed: (){
+        Navigator.pop(context);
       },
     );
+    
   }
 
   @override
@@ -113,6 +114,6 @@ class FormSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return Center(child: Text('Search Forms'));
+    return Center(child: Text('ค้นหาแบบฟอร์ม'));
   }
 }

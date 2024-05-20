@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'package:flutter_application_register/api/apiform.dart';
 import 'package:flutter_application_register/data/cancelListData.dart';
 import 'package:flutter_application_register/data/formList.dart';
+import 'package:flutter_application_register/page/myForm.dart';
 import 'package:flutter_application_register/page/sendOTP.dart';
 import 'package:flutter_application_register/search/search_delegrate.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_application_register/page/suspended.dart';
-import 'package:flutter_application_register/data/formdata.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Activitie extends StatefulWidget {
@@ -21,7 +21,6 @@ class _ActivitieState extends State<Activitie> {
   String phoneNumber = '';
   int _selectedIndex = 0;
   String token = '';
-
 
   @override
   void initState() {
@@ -38,19 +37,18 @@ class _ActivitieState extends State<Activitie> {
     });
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         toolbarHeight: 80,
+        automaticallyImplyLeading: false,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Your Phone Number",
+              "เบอร์โทรศัพท์ของคุณ",
               style: TextStyle(color: Colors.black, fontSize: 10),
             ),
             SizedBox(height: 5),
@@ -60,14 +58,7 @@ class _ActivitieState extends State<Activitie> {
             ),
           ],
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.search, color: Colors.black),
-            onPressed: (){
-              showSearch(context: context, delegate: FormSearchDelegate());
-            },
-          ),
-        ],
+        
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,18 +66,17 @@ class _ActivitieState extends State<Activitie> {
           Padding(
             padding: EdgeInsets.only(left: 20, top: 10),
             child: Text(
-              'เอกสารความยินยอม',
+              'เอกสารรอความยินยอม',
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
             ),
           ),
           Padding(
             padding: EdgeInsets.only(left: 20, bottom: 10),
             child: Text(
-              'รายการเอกสารความยินยอมของคุณ',
+              'รายการเอกสารรอความยินยอมของคุณ',
               style: TextStyle(fontSize: 15, color: Colors.grey),
             ),
           ),
-          
           Divider(
             color: Colors.grey,
             thickness: 3,
@@ -107,11 +97,11 @@ class _ActivitieState extends State<Activitie> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.article_outlined),
-              label: 'เอกสารคำยินยอม',
+              label: 'เอกสารรอคำยินยอม',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.description),
-              label: 'ความยินยอมที่ระงับ',
+              label: 'คำยินยอมของฉัน',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.logout),
@@ -124,7 +114,7 @@ class _ActivitieState extends State<Activitie> {
               _selectedIndex = index;
               if (index == 1) {
                 Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => SuspendedPage()));
+                    MaterialPageRoute(builder: (context) => MyForm()));
               }
               if (index == 2) {
                 _logout(); // เรียกฟังก์ชัน _logout()

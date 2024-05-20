@@ -150,7 +150,7 @@ class _OTPPageState extends State<OTPPage> {
                   height: 80,
                 ),
                 Text(
-                  "OTP Verification",
+                  "ยืนยันรหัส OTP",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 25,
@@ -164,7 +164,7 @@ class _OTPPageState extends State<OTPPage> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Text(
-                    "Enter the OTP sent to",
+                    "กรอกรหัส OTP",
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.grey),
                   ),
@@ -193,13 +193,13 @@ class _OTPPageState extends State<OTPPage> {
                     Text(formatTime(_countDown)),
                     Row(
                       children: [
-                        Text("Didn't receive OTP?",
+                        Text("ไม่ได้รับ OTP?",
                             style: TextStyle(color: Colors.grey)),
                         SizedBox(width: 5),
                         InkWell(
                           onTap: canResend ? resendOTP : null,
                           child: Text(
-                            "Resend",
+                            "ส่งซ้ำ",
                             style: TextStyle(color: canResend ? Colors.blue : Colors.grey),
                           ),
                         ),
@@ -246,7 +246,7 @@ class _OTPPageState extends State<OTPPage> {
                         ),
                       ),
                       child: Text(
-                        "Login",
+                        "เข้าสู่ระบบ",
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,

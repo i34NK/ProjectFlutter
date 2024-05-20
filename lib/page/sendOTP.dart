@@ -118,7 +118,7 @@ class _SendOTPPageState extends State<SendOTPPage> {
                   height: 300,
                 ),
                 Text(
-                  "Login",
+                  "เข้าสู่ระบบ",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 25,
@@ -129,7 +129,7 @@ class _SendOTPPageState extends State<SendOTPPage> {
                   height: 15,
                 ),
                 Text(
-                  "Enter you Phone Number to continue, we will send you OTP to verify",
+                  "กรอกหมายเลขโทรศัพท์ของคุณเพื่อดำเนินการต่อ เราจะส่ง OTP ไปยังหมายเลขโทรศัพท์ของคุณ",
                   style: TextStyle(color: Colors.grey, fontSize: 15),
                   textAlign: TextAlign.center,
                 ),
@@ -143,7 +143,7 @@ class _SendOTPPageState extends State<SendOTPPage> {
                       controller: _phoneController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        hintText: "Enter your phone number",
+                        hintText: "กรุณากรอกเบอร์โทรศัพท์ของคุณ",
                         hintStyle: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 15,
@@ -159,10 +159,10 @@ class _SendOTPPageState extends State<SendOTPPage> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your phone number';
+                          return 'กรุณากรอกเบอร์โทรศัพท์ของคุณ';
                         }
                         if (value.length != 10) {
-                          return 'Phone number must be 10 digits';
+                          return 'กรุณากรอกเบอร์โทรศัพท์ 10 หลัก';
                         }
                         return null;
                       },
@@ -175,7 +175,7 @@ class _SendOTPPageState extends State<SendOTPPage> {
                     : ElevatedButton(
                         onPressed: sendOtp,
                         child: Text(
-                          "Send OTP",
+                          "ส่งรหัส",
                           style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,

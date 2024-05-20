@@ -193,11 +193,11 @@ class FormDetail extends StatelessWidget {
                         ),
                       ),
                     ),
-                    MaterialButton(onPressed: (){
-                      _showDialog(context, 'ต้องการยกเลิกให้คำยินยอมหรือไม่');
-                    },
-                      child: Text('ยกเลิกให้คำยินยอม',style: TextStyle(color: Colors.red),),
-                    ),
+                    // MaterialButton(onPressed: (){
+                    //   _showDialog(context, 'ต้องการยกเลิกให้คำยินยอมหรือไม่');
+                    // },
+                    //   child: Text('ยกเลิกให้คำยินยอม',style: TextStyle(color: Colors.red),),
+                    // ),
                   ],
                 ),
               ),

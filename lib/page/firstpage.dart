@@ -24,7 +24,7 @@ class _FirstPageState extends State<FirstPage> {
                   height: 350,
                 ),
                 Text(
-                  "Let's get started",
+                  "เริ่มต้น",
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 25,
@@ -34,7 +34,7 @@ class _FirstPageState extends State<FirstPage> {
                   height: 20,
                 ),
                 Text(
-                  "Start using personal data consent.",
+                  "เริ่มใช้งานแอปพลิเคชันให้ข้อมูลส่วนบุคคลของคุณ",
                   style: TextStyle(color: Colors.grey),
                 ),
                 SizedBox(height: 30),
@@ -54,7 +54,7 @@ class _FirstPageState extends State<FirstPage> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(25))),
                     child: Text(
-                      "Get started",
+                      "ต่อไป",
                       style: TextStyle(fontSize: 18),
                     ),
                   ),
