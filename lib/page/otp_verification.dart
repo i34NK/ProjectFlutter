@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_application_register/page/myForm.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -51,7 +52,7 @@ class _OTPPageState extends State<OTPPage> {
       await prefs.setString('token', token!);
       // ตรวจสอบ OTP สำเร็จ
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => Activitie()));
+          context, MaterialPageRoute(builder: (context) => MyForm()));
     } else {
       // ไม่สามารถตรวจสอบ OTP ได้
       // คุณสามารถดำเนินการต่อได้ตามต้องการ เช่น แสดงข้อความแจ้งเตือน

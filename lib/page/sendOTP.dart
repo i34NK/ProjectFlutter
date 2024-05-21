@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_register/page/activitie.dart';
+import 'package:flutter_application_register/page/myForm.dart';
 import 'package:flutter_application_register/page/otp_verification.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -88,7 +89,7 @@ class _SendOTPPageState extends State<SendOTPPage> {
         await SharedPreferences.getInstance(); // write data
     await prefs.setString('phone', token); // write data ของ phone และ token
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => Activitie()));
+        context, MaterialPageRoute(builder: (context) => MyForm()));
   }
 
   //ฟังก์ชันการตรวจสอบการล็อกอิน และ Read Data
@@ -97,7 +98,7 @@ class _SendOTPPageState extends State<SendOTPPage> {
     String? saveToken = await prefs.getString('token'); // read data token
     if (saveToken != null) {
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => Activitie()),
+          MaterialPageRoute(builder: (context) => MyForm()),
           (route) => false);
     }
   }

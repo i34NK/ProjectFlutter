@@ -58,7 +58,6 @@ class _ActivitieState extends State<Activitie> {
             ),
           ],
         ),
-        
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,12 +95,12 @@ class _ActivitieState extends State<Activitie> {
           type: BottomNavigationBarType.fixed,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.article_outlined),
-              label: 'เอกสารรอคำยินยอม',
-            ),
-            BottomNavigationBarItem(
               icon: Icon(Icons.description),
               label: 'คำยินยอมของฉัน',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.article_outlined),
+              label: 'เอกสารรอคำยินยอม',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.logout),
@@ -112,9 +111,9 @@ class _ActivitieState extends State<Activitie> {
           onTap: (int index) async {
             setState(() {
               _selectedIndex = index;
-              if (index == 1) {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => MyForm()));
+              if (index == 0) {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => MyForm()));
               }
               if (index == 2) {
                 _logout(); // เรียกฟังก์ชัน _logout()

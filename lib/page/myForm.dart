@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_register/data/myformList.dart';
 import 'package:flutter_application_register/page/activitie.dart';
 import 'package:flutter_application_register/page/sendOTP.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -73,97 +74,10 @@ class _MyFormState extends State<MyForm> {
             color: Colors.grey,
             thickness: 3,
           ),
-          Expanded(child: DefaultTabController(
-            length: 2,
-            child: Column(
-              children: [
-                Material(
-                  child: Container(
-                    height: 60,
-                    color: Colors.white,
-                    child: TabBar(
-                      physics: ClampingScrollPhysics(),
-                      padding:
-                          EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
-                      unselectedLabelColor: Colors.grey,
-                      indicatorSize: TabBarIndicatorSize.label,
-                      indicator: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Color.fromARGB(255, 145, 235, 148),
-                      ),
-                      tabs: [
-                        Tab(
-                          child: Container(
-                            height: 35,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              border: Border.all(
-                                  color: Color.fromARGB(255, 145, 235, 148),
-                                  width: 1),
-                            ),
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text("ยินยอม",style: TextStyle(fontSize: 15),),
-                            ),
-                          ),
-                        ),
-                        Tab(
-                          child: Container(
-                            height: 35,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              border: Border.all(
-                                  color: Color.fromARGB(255, 145, 235, 148),
-                                  width: 1),
-                            ),
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text("หมดอายุ",style: TextStyle(fontSize: 15),),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: TabBarView(
-                    children: [
-                      ListView.separated(
-                        padding: EdgeInsets.all(15),
-                        itemCount: 20,
-                        separatorBuilder: (BuildContext context, int index) =>
-                            Divider(),
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            onTap: () {},
-                            title: Text('คำยินยอม'),
-                            subtitle: Text('test'),
-                            trailing: Icon(Icons.arrow_forward_ios),
-                          );
-                        },
-                      ),
-                      ListView.separated(
-                        padding: EdgeInsets.all(15),
-                        itemCount: 20,
-                        separatorBuilder: (BuildContext context, int index) =>
-                            Divider(),
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            onTap: () {},
-                            title: Text('หมดอายุ'),
-                            subtitle: Text('test'),
-                            trailing: Icon(Icons.arrow_forward_ios),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),),
-          
+          Expanded(
+            child: MyFormList(),
+            
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -173,13 +87,14 @@ class _MyFormState extends State<MyForm> {
           type: BottomNavigationBarType.fixed,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.article_outlined),
-              label: 'เอกสารรอคำยินยอม',
-            ),
-            BottomNavigationBarItem(
               icon: Icon(Icons.description),
               label: 'คำยินยอมของฉัน',
             ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.article_outlined),
+              label: 'เอกสารรอคำยินยอม',
+            ),
+            
             BottomNavigationBarItem(
               icon: Icon(Icons.logout),
               label: 'ออกจากระบบ',
@@ -189,7 +104,7 @@ class _MyFormState extends State<MyForm> {
           onTap: (int index) async {
             setState(() {
               _selectedIndex = index;
-              if (index == 0) {
+              if (index == 1) {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) => Activitie()));
               }
