@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_register/api/apiMyform.dart';
 import 'package:flutter_application_register/api/apiform.dart';
 import 'package:flutter_application_register/model/ConsentFormModel.dart';
 import 'package:flutter_application_register/search/search_delegrate.dart';
 import 'package:intl/intl.dart';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_application_register/api/apiform.dart';
-import 'package:flutter_application_register/model/ConsentFormModel.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter_application_register/search/search_delegrate.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FormFutureBuilder extends StatefulWidget {
   const FormFutureBuilder({super.key});
@@ -18,10 +14,37 @@ class FormFutureBuilder extends StatefulWidget {
 }
 
 class _FormFutureBuilderState extends State<FormFutureBuilder> {
-  Future<List<Payload>> _getForm() async {
-    FetchConsentFormList formDataList = FetchConsentFormList();
-    List<Payload> forms = await formDataList.getConsentFormList();
-    return forms;
+
+  List<Payload> _myforms = [];
+  bool _isLoading = true;
+  Future<List<Payload>> _getMyForm() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? phoneNumber = prefs.getString('phone');
+
+    if (phoneNumber == null) {
+      print("No phone number found!");
+      return [];
+    }
+
+    FetchMyConsentFormList myFormDataList = FetchMyConsentFormList();
+    try {
+      List<Payload> myforms =
+          await myFormDataList.getMyConsentFormList(phoneNumber);
+      List<Payload> filteredForms =
+          myforms.where((form) => form.statusId == '1').toList();
+      print("Filtered Forms: ${filteredForms.length}"); // Debugging line
+      return filteredForms;
+    } catch (e) {
+      print("Error loading forms: $e");
+      return [];
+    }
+    
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getMyForm();
   }
 
   @override
@@ -51,79 +74,137 @@ class _FormFutureBuilderState extends State<FormFutureBuilder> {
           ),
           Expanded(
             child: FutureBuilder<List<Payload>>(
-              future: _getForm(),
+              future: _getMyForm(), // This now returns Future<List<Payload>>
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
                 }
-                if (!snapshot.hasData || snapshot.data.isEmpty) {
-                  return Center(child: Text('No data found'));
+                if (snapshot.hasError) {
+                  return Center(
+                      child: Text('Error: ${snapshot.error.toString()}'));
                 }
-
-                return RefreshIndicator(
-                  onRefresh: _getForm,
-                  child: ListView.builder(
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return ListTile(
-                        title: Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: 10),
-                                  Text(
-                                    snapshot.data[index].title,
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  Text(
-                                    snapshot.data[index].dataType,
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                  SizedBox(height: 5),
-                                  Text(
-                                    DateFormat('yyyy-MM-dd').format(
-                                        snapshot.data[index].requestDate),
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                if (snapshot.data!.isEmpty) {
+                  return Center(
+                      child: Text('No forms found with status ID = 1'));
+                }
+                return DefaultTabController(
+                  length: 2,
+                  child: Column(
+                    children: [
+                      Material(
+                        child: Container(
+                          height: 60,
+                          color: Colors.white,
+                          child: TabBar(
+                            physics: ClampingScrollPhysics(),
+                            padding: EdgeInsets.only(
+                                top: 10, left: 10, right: 10, bottom: 10),
+                            unselectedLabelColor: Colors.grey,
+                            indicatorSize: TabBarIndicatorSize.label,
+                            indicator: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: Color.fromARGB(255, 145, 235, 148),
                             ),
-                          ],
-                        ),
-                        trailing: IconButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    FormDetail(snapshot.data[index]),
+                            tabs: [
+                              Tab(
+                                child: Container(
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    border: Border.all(color: Colors.grey),
+                                  ),
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text('ยินยอม'),
+                                  ),
+                                ),
                               ),
-                            );
-                          },
-                          icon: Icon(Icons.article_outlined),
+                              Tab(
+                                child: Container(
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    border: Border.all(color: Colors.grey),
+                                  ),
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text('หมดอายุ'),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  FormDetail(snapshot.data[index]),
-                            ),
-                          );
-                        },
-                      );
-                    },
+                      ),
+                      Expanded(
+                        child: RefreshIndicator(
+                          onRefresh: _getMyForm,
+                          child: ListView.builder(
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (context, index) {
+                              var form = snapshot.data![index];
+                              return ListTile(
+                                title: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            snapshot.data![index].title,
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          Text('Status ID: ${form.statusId}'),
+                                          SizedBox(height: 5),
+                                          Text(
+                                            DateFormat('yyyy-MM-dd').format(
+                                                snapshot
+                                                    .data[index].requestDate),
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                trailing: IconButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            FormDetail(snapshot.data[index]),
+                                      ),
+                                    );
+                                  },
+                                  icon: Icon(Icons.article_outlined),
+                                ),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          FormDetail(snapshot.data[index]),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 );
               },

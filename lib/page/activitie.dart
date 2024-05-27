@@ -91,7 +91,7 @@ class _ActivitieState extends State<Activitie> {
       bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Color.fromARGB(255, 145, 235, 148),
           selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.grey,
+          // unselectedItemColor: Colors.grey,
           type: BottomNavigationBarType.fixed,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(

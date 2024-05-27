@@ -15,8 +15,8 @@ class MyFormList extends StatefulWidget {
 
 class _MyFormListState extends State<MyFormList>
     with SingleTickerProviderStateMixin {
-  List<Payload> _formsStatus1 = [];
   List<Payload> _formsStatus2 = [];
+  List<Payload> _formsStatus3 = [];
   bool _isLoading = true;
   late TabController _tabController;
 
@@ -39,8 +39,8 @@ class _MyFormListState extends State<MyFormList>
     try {
       List<Payload> forms =
           await FetchMyConsentFormList().getMyConsentFormList(phoneNumber);
-      _formsStatus1 = forms.where((form) => form.statusId == '1').toList();
       _formsStatus2 = forms.where((form) => form.statusId == '2').toList();
+      _formsStatus3 = forms.where((form) => form.statusId == '3').toList();
       setState(() => _isLoading = false);
     } catch (e) {
       print("Error loading forms: $e");
@@ -78,7 +78,8 @@ class _MyFormListState extends State<MyFormList>
             color: Colors.white,
             child: TabBar(
               physics: ClampingScrollPhysics(),
-              padding: EdgeInsets.only(top: 10,left: 10, right: 10,bottom: 10),
+              padding:
+                  EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
               unselectedLabelColor: Colors.grey,
               indicatorSize: TabBarIndicatorSize.label,
               indicator: BoxDecoration(
@@ -97,7 +98,11 @@ class _MyFormListState extends State<MyFormList>
                     ),
                     child: Align(
                       alignment: Alignment.center,
-                      child: Text('ยินยอม',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
+                      child: Text(
+                        'ยินยอม',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
                     ),
                   ),
                 ),
@@ -110,7 +115,11 @@ class _MyFormListState extends State<MyFormList>
                     ),
                     child: Align(
                       alignment: Alignment.center,
-                      child: Text('หมดอายุ',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
+                      child: Text(
+                        'หมดอายุ',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
                     ),
                   ),
                 ),
@@ -119,12 +128,10 @@ class _MyFormListState extends State<MyFormList>
           ),
           Expanded(
             child: TabBarView(
-              
               controller: _tabController,
-              
               children: [
-                _buildFormList(_formsStatus1),
                 _buildFormList(_formsStatus2),
+                _buildFormList(_formsStatus3),
               ],
             ),
           ),
@@ -154,13 +161,24 @@ class _MyFormListState extends State<MyFormList>
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                     ),
-                    
-                    SizedBox(height: 5,),
+                    Text(
+                      forms[index].dataType,
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 14,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
                     Text(
                       DateFormat('yyyy-MM-dd').format(
                         forms[index].requestDate,
                       ),
-                      style: TextStyle(fontSize: 14,color: Colors.grey),
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 14,
+                      ),
                     ),
                   ],
                 ),
@@ -178,9 +196,9 @@ class _MyFormListState extends State<MyFormList>
             },
             icon: Icon(Icons.article_outlined),
           ),
-          onTap: (){
+          onTap: () {
             Navigator.push(
-              context, 
+              context,
               MaterialPageRoute(
                 builder: (context) => FormDetail(forms[index]),
               ),
@@ -240,7 +258,6 @@ class FormDetail extends StatelessWidget {
 
                     // แก้ไขจาก lorem เป็นอย่างอื่น
 
-                    
                     SizedBox(height: 150),
                     Padding(
                       padding: EdgeInsets.fromLTRB(
