@@ -85,7 +85,7 @@ class _FormFutureBuilderState extends State<FormFutureBuilder> {
                 }
                 if (snapshot.data!.isEmpty) {
                   return Center(
-                      child: Text('No forms found with status ID = 1'));
+                      child: Text('ไม่แบบฟอร์ม'));
                 }
                 return DefaultTabController(
                   length: 2,
