@@ -10,6 +10,7 @@ void main(){
       home: FirstPage(),
     ));
 
+    await Future.delayed(Duration(seconds: 5));
 
     final nextbutton = find.byType(ElevatedButton);
     await tester.tap(nextbutton);
@@ -29,11 +30,12 @@ void main(){
     final phoneField = find.byType(TextFormField);
 
     // Enter the phone number '0987654321'.
-    await tester.enterText(phoneField, '0987654321');
+    await tester.enterText(phoneField, '0992194628');
 
     // Verify the input value.
-    expect(find.text('0987654321'), findsOneWidget);
+    expect(find.text('0992194628'), findsOneWidget);
 
+    await Future.delayed(Duration(seconds: 5));
     // Tap the submit button.
     final submitButton = find.byType(ElevatedButton);
     await tester.tap(submitButton);
@@ -43,5 +45,8 @@ void main(){
 
     // Verify the loading indicator is shown.
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    
+    
   });
+  
 }

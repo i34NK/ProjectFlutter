@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_register/api/apiform.dart';
 import 'package:flutter_application_register/data/formList.dart';
 import 'package:flutter_application_register/model/ConsentFormModel.dart';
+import 'package:flutter_application_register/model/PayloadFormModel.dart';
 import 'package:intl/intl.dart';
 
 class FormSearchDelegate extends SearchDelegate {
@@ -23,17 +24,16 @@ class FormSearchDelegate extends SearchDelegate {
   Widget buildLeading(BuildContext context) {
     return IconButton(
       icon: Icon(Icons.arrow_back_ios),
-      onPressed: (){
+      onPressed: () {
         Navigator.pop(context);
       },
     );
-    
   }
 
   @override
   Widget buildResults(BuildContext context) {
-    return FutureBuilder<List<Payload>>(
-      future: _formList.getConsentFormList(),
+    return FutureBuilder<List<Payloads>>(
+      future: _formList.getConsentFormList() as Future<List<Payloads>>?,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
@@ -42,10 +42,10 @@ class FormSearchDelegate extends SearchDelegate {
           return Center(child: Text('No results found'));
         }
 
-        List<Payload> data = snapshot.data!;
-        List<Payload> results = data
+        List<Payloads> data = snapshot.data!;
+        List<Payloads> results = data
             .where((form) =>
-                form.title.toLowerCase().contains(query.toLowerCase()))
+                form.formName.toLowerCase().contains(query.toLowerCase()))
             .toList();
 
         return ListView.builder(
@@ -61,12 +61,12 @@ class FormSearchDelegate extends SearchDelegate {
                       children: [
                         SizedBox(height: 10),
                         Text(
-                          results[index].title,
+                          results[index].formName,
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w600),
                         ),
                         Text(
-                          results[index].dataType,
+                          results[index].formDetail,
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 14,
@@ -91,7 +91,7 @@ class FormSearchDelegate extends SearchDelegate {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => FormDetail(results[index]),
+                      builder: (context) => FormDetail(form: results[index]),
                     ),
                   );
                 },
@@ -101,7 +101,7 @@ class FormSearchDelegate extends SearchDelegate {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => FormDetail(results[index]),
+                    builder: (context) => FormDetail(form: results[index]),
                   ),
                 );
               },

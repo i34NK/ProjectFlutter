@@ -126,7 +126,7 @@ class _ActivitieState extends State<Activitie> {
   //ฟังก์ชันการออกจากระบบ
   void _logout() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    await pref.remove("phone");
+    await pref.remove("recipient_phone");
     await pref.remove("token");
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (context) => SendOTPPage()),

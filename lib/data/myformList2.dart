@@ -5,45 +5,41 @@ import 'package:flutter_application_register/search/search_delegrate.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class FormFutureBuilder extends StatefulWidget {
-  const FormFutureBuilder({super.key});
-
+class MyFormList extends StatefulWidget {
   @override
-  State<FormFutureBuilder> createState() => _FormFutureBuilderState();
+  _MyFormListState createState() => _MyFormListState();
 }
 
-class _FormFutureBuilderState extends State<FormFutureBuilder> with SingleTickerProviderStateMixin {
-  List<Payloads> _formsStatus1 = [];
+class _MyFormListState extends State<MyFormList> with SingleTickerProviderStateMixin {
+  List<Payloads> _formsStatus2 = [];
+  List<Payloads> _formsStatus3 = [];
   bool _isLoading = true;
   late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 1, vsync: this);
-    _getMyForm();
+    _tabController = TabController(length: 2, vsync: this);
+    _getMyForms();
   }
 
-  Future<void> _getMyForm() async {
+  Future<void> _getMyForms() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? phoneNumber = prefs.getString('phone');
-
     if (phoneNumber == null) {
-      print('No phone number found');
       setState(() => _isLoading = false);
       return;
     }
 
     try {
-      List<Payloads> forms = await FetchMyConsentFormList().getMyConsentFormList(phoneNumber);
-      print('Forms fetched: ${forms.length}');
+      List<Payloads> forms =
+          await FetchMyConsentFormList().getMyConsentFormList(phoneNumber);
       setState(() {
-        _formsStatus1 = forms.where((form) => form.statusId == '1').toList();
+        _formsStatus2 = forms.where((form) => form.statusId == '2').toList();
+        _formsStatus3 = forms.where((form) => form.statusId == '3').toList();
         _isLoading = false;
       });
-      print('Filtered forms: ${_formsStatus1.length}');
     } catch (e) {
-      print('Error loading forms: $e');
       setState(() => _isLoading = false);
     }
   }
@@ -60,10 +56,9 @@ class _FormFutureBuilderState extends State<FormFutureBuilder> with SingleTicker
                 filled: true,
                 fillColor: Color.fromARGB(255, 236, 233, 233),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
+                    borderRadius: BorderRadius.circular(8.0)),
                 hintText: 'ค้นหาแบบฟอร์ม',
-                hintStyle: TextStyle(fontSize: 15),
+                hintStyle: TextStyle(fontSize: 16),
                 prefixIcon: Icon(Icons.search),
                 prefixIconColor: Colors.black,
                 isDense: true,
@@ -73,11 +68,68 @@ class _FormFutureBuilderState extends State<FormFutureBuilder> with SingleTicker
               },
             ),
           ),
-          _isLoading
-              ? Center(child: CircularProgressIndicator())
-              : Expanded(
-                  child: _buildFormList(_formsStatus1),
+          Container(
+            height: 60,
+            color: Colors.white,
+            child: TabBar(
+              physics: ClampingScrollPhysics(),
+              padding:
+                  EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
+              unselectedLabelColor: Colors.grey,
+              indicatorSize: TabBarIndicatorSize.label,
+              indicator: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                color: Color.fromARGB(255, 145, 235, 148),
+                border: Border.all(color: Colors.grey, width: 1),
+              ),
+              controller: _tabController,
+              tabs: [
+                Tab(
+                  child: Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(color: Colors.grey, width: 1),
+                    ),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'ยินยอม',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                    ),
+                  ),
                 ),
+                Tab(
+                  child: Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(color: Colors.grey, width: 1),
+                    ),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'หมดอายุ',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                _buildFormList(_formsStatus2),
+                _buildFormList(_formsStatus3),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -161,70 +213,24 @@ class FormDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('รายเอียดแบบฟอร์ม', style: TextStyle(fontWeight: FontWeight.bold)),
-        centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 145, 235, 148),
+        title: Text('Form Detail'),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Column(
-                  children: [
-                    SizedBox(height: 20),
-                    Text(
-                      form.formName,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      form.formDetail,
-                      style: TextStyle(
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Form Name: ${form.formName}',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            SizedBox(height: 8),
+            Text('Form Detail: ${form.formDetail}',
+                style: TextStyle(fontSize: 16)),
+            SizedBox(height: 8),
+            Text('Recipient Name: ${form.recipientName}',
+                style: TextStyle(fontSize: 16)),
+          ],
         ),
       ),
     );
   }
-}
-
-void _showDialog(BuildContext context, String message) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('ยกเลิกให้คำยินยอม'),
-        content: Text('ต้องการยกเลิกให้คำยินยอมหรือไม่'),
-        actions: [
-          MaterialButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text('Ok'),
-          ),
-          MaterialButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text('Cancel'),
-          ),
-        ],
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-      );
-    },
-  );
 }
