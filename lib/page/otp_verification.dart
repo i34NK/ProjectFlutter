@@ -4,11 +4,9 @@ import 'package:flutter_application_register/page/myForm.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_register/page/activitie.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_application_register/page/sendOTP.dart';
 
 class OTPPage extends StatefulWidget {
   final String phoneNumber;

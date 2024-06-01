@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_register/data/myformList.dart';
-import 'package:flutter_application_register/data/myformList2.dart';
+import 'package:flutter_application_register/data/myformList.dart';
 import 'package:flutter_application_register/page/activitie.dart';
 import 'package:flutter_application_register/page/sendOTP.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -39,17 +39,26 @@ class _MyFormState extends State<MyForm> {
         automaticallyImplyLeading: false,
         toolbarHeight: 80,
         backgroundColor: Colors.white,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              "เบอร์โทรศัพท์ของคุณ",
-              style: TextStyle(color: Colors.black, fontSize: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "เบอร์โทรศัพท์ของคุณ",
+                  style: TextStyle(color: Colors.black, fontSize: 12),
+                ),
+                SizedBox(height: 5),
+                Text(
+                  phoneNumber, // แสดงเบอร์โทรศัพท์
+                  style: TextStyle(color: Colors.black, fontSize: 15),
+                ),
+              ],
             ),
-            SizedBox(height: 5),
-            Text(
-              phoneNumber, // แสดงเบอร์โทรศัพท์
-              style: TextStyle(color: Colors.black, fontSize: 15),
+            Image.asset(
+              'images/logoMobile.png',
+              height: 60,
             ),
           ],
         ),
@@ -77,7 +86,6 @@ class _MyFormState extends State<MyForm> {
           ),
           Expanded(
             child: MyFormList(),
-            
           ),
         ],
       ),
@@ -95,7 +103,6 @@ class _MyFormState extends State<MyForm> {
               icon: Icon(Icons.article_outlined),
               label: 'เอกสารรอคำยินยอม',
             ),
-            
             BottomNavigationBarItem(
               icon: Icon(Icons.logout),
               label: 'ออกจากระบบ',
