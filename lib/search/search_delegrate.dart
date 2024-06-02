@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_register/api/apiform.dart';
-import 'package:flutter_application_register/data/formList.dart';
+import 'package:flutter_application_register/data/wait_formList.dart';
 import 'package:flutter_application_register/model/ConsentFormModel.dart';
 import 'package:flutter_application_register/model/PayloadFormModel.dart';
 import 'package:intl/intl.dart';

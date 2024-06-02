@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_register/data/myformList.dart';
-import 'package:flutter_application_register/page/activitie.dart';
+import 'package:flutter_application_register/data/my_formList.dart';
+import 'package:flutter_application_register/page/waitconsent.dart';
 import 'package:flutter_application_register/page/myForm.dart';
 import 'package:flutter_application_register/page/otp_verification.dart';
 import 'package:flutter_application_register/page/sendOTP.dart';

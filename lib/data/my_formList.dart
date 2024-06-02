@@ -213,22 +213,46 @@ class FormDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Form Detail'),
+        title: Text('รายละเอียดแบบฟอร์ม',style: TextStyle(fontWeight: FontWeight.bold),),
+        centerTitle: true,
+        backgroundColor: Color.fromARGB(255, 145, 235, 148),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Form Name: ${form.formName}',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            SizedBox(height: 8),
-            Text('Form Detail: ${form.formDetail}',
-                style: TextStyle(fontSize: 16)),
-            SizedBox(height: 8),
-            Text('Recipient Name: ${form.recipientName}',
-                style: TextStyle(fontSize: 16)),
-          ],
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Column(
+                  children: [
+                    SizedBox(height: 20),
+                    // Text(
+                    //   form.formId,
+                    //   style: TextStyle(
+                    //     fontSize: 20,
+                    //     fontWeight: FontWeight.bold,
+                    //   ),
+                    // ),
+                    Text(
+                      form.formName,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Text(
+                      form.formDetail,
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

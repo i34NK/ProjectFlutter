@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_register/page/activitie.dart';
+import 'package:flutter_application_register/page/waitconsent.dart';
 import 'package:flutter_application_register/page/myForm.dart';
 import 'package:flutter_application_register/page/otp_verification.dart';
 import 'package:http/http.dart' as http;
