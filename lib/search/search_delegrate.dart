@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_register/api/apiform.dart';
 import 'package:flutter_application_register/data/wait_formList.dart';
 import 'package:flutter_application_register/model/ConsentFormModel.dart';
+import 'package:flutter_application_register/model/ConsentModel.dart';
 import 'package:flutter_application_register/model/PayloadFormModel.dart';
 import 'package:intl/intl.dart';
 
@@ -32,8 +33,8 @@ class FormSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return FutureBuilder<List<Payloads>>(
-      future: _formList.getConsentFormList() as Future<List<Payloads>>?,
+    return FutureBuilder<List<ConsentForm>>(
+      future: _formList.getConsentFormList() as Future<List<ConsentForm>>?,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
@@ -42,8 +43,8 @@ class FormSearchDelegate extends SearchDelegate {
           return Center(child: Text('No results found'));
         }
 
-        List<Payloads> data = snapshot.data!;
-        List<Payloads> results = data
+        List<ConsentForm> data = snapshot.data!;
+        List<ConsentForm> results = data
             .where((form) =>
                 form.formName.toLowerCase().contains(query.toLowerCase()))
             .toList();

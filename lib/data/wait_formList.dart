@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_register/api/apiMyform.dart';
+import 'package:flutter_application_register/model/ConsentModel.dart';
 import 'package:flutter_application_register/model/PayloadFormModel.dart';
 import 'package:flutter_application_register/search/search_delegrate.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FormFutureBuilder extends StatefulWidget {
-  const FormFutureBuilder({super.key});
-
   @override
   State<FormFutureBuilder> createState() => _FormFutureBuilderState();
 }
 
-class _FormFutureBuilderState extends State<FormFutureBuilder> with SingleTickerProviderStateMixin {
-  List<Payloads> _formsStatus1 = [];
+class _FormFutureBuilderState extends State<FormFutureBuilder>
+    with SingleTickerProviderStateMixin {
+  List<ConsentForm> _formsStatus1 = [];
+  List<ConsentForm> _formsStatus4 = [];
   bool _isLoading = true;
   late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 1, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
     _getMyForm();
   }
 
@@ -29,21 +30,19 @@ class _FormFutureBuilderState extends State<FormFutureBuilder> with SingleTicker
     String? phoneNumber = prefs.getString('phone');
 
     if (phoneNumber == null) {
-      print('No phone number found');
       setState(() => _isLoading = false);
       return;
     }
 
     try {
-      List<Payloads> forms = await FetchMyConsentFormList().getMyConsentFormList(phoneNumber);
-      print('Forms fetched: ${forms.length}');
+      FormModel formModel =
+          await FetchMyConsentFormList().getMyConsentFormList(phoneNumber);
+      List<ConsentForm> forms = formModel.payload.forms;
       setState(() {
         _formsStatus1 = forms.where((form) => form.statusId == '1').toList();
         _isLoading = false;
       });
-      print('Filtered forms: ${_formsStatus1.length}');
     } catch (e) {
-      print('Error loading forms: $e');
       setState(() => _isLoading = false);
     }
   }
@@ -73,17 +72,79 @@ class _FormFutureBuilderState extends State<FormFutureBuilder> with SingleTicker
               },
             ),
           ),
-          _isLoading
-              ? Center(child: CircularProgressIndicator())
-              : Expanded(
-                  child: _buildFormList(_formsStatus1),
+          Container(
+            height: 60,
+            color: Colors.white,
+            child: TabBar(
+              physics: ClampingScrollPhysics(),
+              padding:
+                  EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
+              unselectedLabelColor: Colors.grey,
+              indicatorSize: TabBarIndicatorSize.label,
+              indicator: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+                color: Color.fromARGB(255, 145, 235, 148),
+                border: Border.all(color: Colors.grey, width: 1),
+              ),
+              controller: _tabController,
+              tabs: [
+                Tab(
+                  child: Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(color: Colors.grey, width: 1),
+                    ),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'รอคำยินยอม',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                    ),
+                  ),
                 ),
+                Tab(
+                  child: Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(color: Colors.grey, width: 1),
+                    ),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'ปฏิเสธ',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                _buildFormList(_formsStatus1),
+                _buildFormList(_formsStatus4),
+              ],
+            ),
+          ),
+          // _isLoading
+          //     ? Center(child: CircularProgressIndicator())
+          //     : Expanded(
+          //         child: _buildFormList(_formsStatus1),
+          //       ),
         ],
       ),
     );
   }
 
-  Widget _buildFormList(List<Payloads> forms) {
+  Widget _buildFormList(List<ConsentForm> forms) {
     if (forms.isEmpty) {
       return Center(child: Text('ไม่มีแบบฟอร์ม'));
     }
@@ -153,7 +214,7 @@ class _FormFutureBuilderState extends State<FormFutureBuilder> with SingleTicker
 }
 
 class FormDetail extends StatelessWidget {
-  final Payloads form;
+  final ConsentForm form;
 
   FormDetail({required this.form});
 
@@ -161,7 +222,8 @@ class FormDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('รายเอียดแบบฟอร์ม', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text('รายเอียดแบบฟอร์ม',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: Color.fromARGB(255, 145, 235, 148),
       ),
@@ -192,6 +254,29 @@ class FormDetail extends StatelessWidget {
                   ],
                 ),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  MaterialButton(
+                    onPressed: () {
+                      
+                    },
+                    child: Text(
+                      'ยินยอม',
+                      style: TextStyle(color: Colors.green),
+                    ),
+                  ),
+                  MaterialButton(
+                    onPressed: () {
+                      
+                    },
+                    child: Text(
+                      'ไม่ยินยอม',
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -200,31 +285,59 @@ class FormDetail extends StatelessWidget {
   }
 }
 
-void _showDialog(BuildContext context, String message) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('ยกเลิกให้คำยินยอม'),
-        content: Text('ต้องการยกเลิกให้คำยินยอมหรือไม่'),
-        actions: [
-          MaterialButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text('Ok'),
-          ),
-          MaterialButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text('Cancel'),
-          ),
-        ],
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-      );
-    },
-  );
-}
+// void _showDialogAgree(BuildContext context, String message) {
+//   showDialog(
+//     context: context,
+//     builder: (BuildContext context) {
+//       return AlertDialog(
+//         title: Text('ให้คำยินยอม'),
+//         content: Text('ต้องการให้คำยินยอมหรือไม่'),
+//         actions: [
+//           MaterialButton(
+//             onPressed: () {
+//               Navigator.of(context).pop();
+//             },
+//             child: Text('Ok'),
+//           ),
+//           MaterialButton(
+//             onPressed: () {
+//               Navigator.of(context).pop();
+//             },
+//             child: Text('Cancel'),
+//           ),
+//         ],
+//         shape: RoundedRectangleBorder(
+//           borderRadius: BorderRadius.circular(10.0),
+//         ),
+//       );
+//     },
+//   );
+// }
+// void _showDialogRefuse(BuildContext context, String message) {
+//   showDialog(
+//     context: context,
+//     builder: (BuildContext context) {
+//       return AlertDialog(
+//         title: Text('ปฏิเสธการให้คำยินยอม'),
+//         content: Text('ต้องการปฏิเสธการให้คำยินยอมหรือไม่'),
+//         actions: [
+//           MaterialButton(
+//             onPressed: () {
+//               Navigator.of(context).pop();
+//             },
+//             child: Text('Ok'),
+//           ),
+//           MaterialButton(
+//             onPressed: () {
+//               Navigator.of(context).pop();
+//             },
+//             child: Text('Cancel'),
+//           ),
+//         ],
+//         shape: RoundedRectangleBorder(
+//           borderRadius: BorderRadius.circular(10.0),
+//         ),
+//       );
+//     },
+//   );
+// }

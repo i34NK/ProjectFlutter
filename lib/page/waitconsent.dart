@@ -63,7 +63,7 @@ class _ActivitieState extends State<Activitie> {
           Padding(
             padding: EdgeInsets.only(left: 20, top: 10),
             child: Text(
-              'เอกสารรอความยินยอม',
+              'คำยินยอมของฉัน',
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
             ),
           ),

@@ -1,11 +1,10 @@
 import 'dart:convert';
-import 'package:flutter_application_register/model/PayloadFormModel.dart';
+import 'package:flutter_application_register/model/ConsentModel.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_application_register/model/ConsentFormModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FetchConsentFormList {
-  Future<List<Payloads>> getConsentFormList() async {
+  Future<FormModel> getConsentFormList() async {
     // ทำการเรียกใช้ SharedPreferences
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? phoneNumber = prefs.getString('phone');
@@ -20,9 +19,11 @@ class FetchConsentFormList {
     var response = await http.get(uri);
     if (response.statusCode == 200) {
       var jsonData = json.decode(response.body);
-      List<Payloads> forms = (jsonData['payload'] as List).map((form) => Payloads.fromJson(form)).toList();
-      return forms;
+      FormModel formModel = FormModel.fromJson(jsonData);
+      print('Data fetched successfully: ${formModel.payload.forms.length} forms');
+      return formModel;
     } else {
+      print('Failed to load data');
       throw Exception('Failed to load data');
     }
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_register/api/apiMyform.dart';
-import 'package:flutter_application_register/model/PayloadFormModel.dart';
+import 'package:flutter_application_register/model/ConsentModel.dart';
 import 'package:flutter_application_register/search/search_delegrate.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,9 +10,10 @@ class MyFormList extends StatefulWidget {
   _MyFormListState createState() => _MyFormListState();
 }
 
-class _MyFormListState extends State<MyFormList> with SingleTickerProviderStateMixin {
-  List<Payloads> _formsStatus2 = [];
-  List<Payloads> _formsStatus3 = [];
+class _MyFormListState extends State<MyFormList>
+    with SingleTickerProviderStateMixin {
+  List<ConsentForm> _formsStatus2 = [];
+  List<ConsentForm> _formsStatus3 = [];
   bool _isLoading = true;
   late TabController _tabController;
 
@@ -32,8 +33,9 @@ class _MyFormListState extends State<MyFormList> with SingleTickerProviderStateM
     }
 
     try {
-      List<Payloads> forms =
+      FormModel formModel =
           await FetchMyConsentFormList().getMyConsentFormList(phoneNumber);
+      List<ConsentForm> forms = formModel.payload.forms;
       setState(() {
         _formsStatus2 = forms.where((form) => form.statusId == '2').toList();
         _formsStatus3 = forms.where((form) => form.statusId == '3').toList();
@@ -126,7 +128,7 @@ class _MyFormListState extends State<MyFormList> with SingleTickerProviderStateM
               controller: _tabController,
               children: [
                 _buildFormList(_formsStatus2),
-                _buildFormList(_formsStatus3),
+                _buildFormList(_formsStatus2),
               ],
             ),
           ),
@@ -135,7 +137,7 @@ class _MyFormListState extends State<MyFormList> with SingleTickerProviderStateM
     );
   }
 
-  Widget _buildFormList(List<Payloads> forms) {
+  Widget _buildFormList(List<ConsentForm> forms) {
     if (forms.isEmpty) {
       return Center(child: Text('ไม่มีแบบฟอร์ม'));
     }
@@ -205,7 +207,7 @@ class _MyFormListState extends State<MyFormList> with SingleTickerProviderStateM
 }
 
 class FormDetail extends StatelessWidget {
-  final Payloads form;
+  final ConsentForm form;
 
   FormDetail({required this.form});
 
@@ -213,7 +215,10 @@ class FormDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('รายละเอียดแบบฟอร์ม',style: TextStyle(fontWeight: FontWeight.bold),),
+        title: Text(
+          'รายละเอียดแบบฟอร์ม',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
         backgroundColor: Color.fromARGB(255, 145, 235, 148),
       ),
@@ -227,13 +232,6 @@ class FormDetail extends StatelessWidget {
                 child: Column(
                   children: [
                     SizedBox(height: 20),
-                    // Text(
-                    //   form.formId,
-                    //   style: TextStyle(
-                    //     fontSize: 20,
-                    //     fontWeight: FontWeight.bold,
-                    //   ),
-                    // ),
                     Text(
                       form.formName,
                       style: TextStyle(
@@ -247,6 +245,19 @@ class FormDetail extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 14,
                       ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        MaterialButton(
+                          onPressed: () {},
+                          child: Text(
+                            'ยกเลิกให้คำยินยอม',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ),
+                        
+                      ],
                     ),
                   ],
                 ),
